@@ -76,7 +76,9 @@ class ImageFormat{
 		//型作り
 		$new_image = imagecreatetruecolor($size['width'], $size['height']);
 
-		$exif = @exif_read_data($pre_file, 0, true);
+		$exif = $this->exifInformation($pre_file);
+		if($exif == null) return null;
+
 		$base_image = imagecreatefromjpeg($pre_file);
 		if(isset($exif['IFD0']['Orientation'])){
 			//回転処理
@@ -106,6 +108,18 @@ class ImageFormat{
 		
 		return $file_path;
 
+	}
+
+	//exif情報取得
+	public function exifInformation($filepath){
+		if(isset($filepath) == false) return null;
+		if(file_exists($filepath) == false) return null;
+		$exif = exif_read_data($file, 0, true);
+		if($exif != false){
+			return null;
+		}else{
+			return $exif;
+		}
 	}
 
 	//同じ縦横比のまま長いほうが指定した数値になるように縦横を返す
