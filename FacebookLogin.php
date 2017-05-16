@@ -11,17 +11,17 @@ class Facebook{
 	const CALLBACK_URL = "";
 
 	//facebookのログイン画面のリダイレクトURL取得
-	public function redirectURL(){
+	public function redirectURL($scope = null){
 		$callback_url = urlencode(self::CALLBACK_URL);
-		$facebook_redirct_url =  "https://www.facebook.com/dialog/oauth?client_id=". self::APP_ID. "&redirect_uri=". $callback_url. "&state=". self::STATE. "&scope=". $scope;
-		return $facebool_url;
+		$facebook_url =  "https://www.facebook.com/dialog/oauth?client_id=". self::APP_ID. "&redirect_uri=". $callback_url. "&state=". self::STATE. "&scope=". $scope;
+		return $facebook_url;
 	}
 
 	//フェイスブックとの認証やユーザーの登録
 	public function oauth($params){
 		if($this->isCodeCorrect($params) == false) return false;
 		if($this->isStateCorrect($params) == false) return false;
-		
+
 		$token_array = $this->accessToken($code);
 		if($token_array == null) return false;
 
@@ -60,7 +60,7 @@ class Facebook{
 			}
 		}else{
 			return false;
-		}	
+		}
 	}
 
 	//アクセストークンの取得
@@ -70,7 +70,7 @@ class Facebook{
 			$get_token_array = json_decode($get_token_json, true);
 			return $get_token_array;
 		}else{
-			return null;	
+			return null;
 		}
 	}
 
@@ -81,7 +81,7 @@ class Facebook{
 			$user_array = json_decode($json, true);
 			return $user_array;
 		}else{
-			return null;	
+			return null;
 		}
 	}
 
