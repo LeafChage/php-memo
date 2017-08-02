@@ -8,7 +8,7 @@ use Aws\S3\S3Client;
 use Aws\S3\Exception\S3Excepton;
 use Guzzle\Http\EntityBody;
 
-class ImageS3{ 
+class S3{
 	const KEY = '';
 	const SECRET_KEY = '';
 	const REGION = '';
@@ -22,9 +22,9 @@ class ImageS3{
 	//アップロード後のS3でのファイル名(new_file)
 	public function uploadS3($new_file){
 		if(isset($this->local_file) == false) return null;
-		if(file_exists($this->local_file) == false) return null;	
+		if(file_exists($this->local_file) == false) return null;
 		if(isset($new_file) == false) return null;
-		
+
 		$mime_type = mime_content_type($this->local_file);
 		$s3_object = $this->getS3ClientInstance();
 		$upload_information = [
@@ -36,12 +36,12 @@ class ImageS3{
 		];
 		$result = $s3_object->putObject($upload_information);
 		if(isset($result['ObjectURL']) == false) return null;
-		
+
 		//不要になった画像の削除
 		if(file_exists($this->local_file)) unlink($this->local_file);
 		return $result['ObjectURL'];
 	}
-	
+
 	//S3クライアントのインスタンス作成
 	private function getS3ClientInstance(){
 		$s3_setting = [
